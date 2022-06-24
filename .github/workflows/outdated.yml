@@ -1,0 +1,33 @@
+name: Outdated
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: "0 6 * * 6"
+
+jobs:
+  outdated:
+    strategy:
+      matrix:
+        go-version:
+          - 1.x
+        os:
+          - ubuntu-latest
+    env:
+      OS: ${{ matrix.os }}
+      GO: ${{ matrix.go-version }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+      - name: Install go-mod-outdated package
+        run: go install github.com/psampaz/go-mod-outdated@v0.8.0
+      - name: Check outdated
+        run: go list -u -m -json all | $(go env GOPATH)/bin/go-mod-outdated -direct -ci
