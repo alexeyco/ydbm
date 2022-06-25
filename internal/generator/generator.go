@@ -14,21 +14,24 @@ import (
 	"github.com/alexeyco/ydbm/internal/generator/actions/executor"
 	"github.com/alexeyco/ydbm/internal/generator/actions/migration"
 	"github.com/alexeyco/ydbm/internal/generator/context"
+	"github.com/alexeyco/ydbm/internal/generator/validator"
 )
 
 var migrationFileRegex = regexp.MustCompile(`^\d+_[\w\d_]+\.go$`)
 
 // Generator describes migrations generator.
 type Generator struct {
-	fs      afero.Fs
-	actions []Action
-	info    string
+	fs        afero.Fs
+	validator Validator
+	actions   []Action
+	info      string
 }
 
 // Generate returns new Generator.
 func Generate(info string, opts ...Option) *Generator {
 	g := &Generator{
-		fs: afero.NewOsFs(),
+		fs:        afero.NewOsFs(),
+		validator: validator.New(),
 		actions: []Action{
 			migration.New(),
 			executor.New(),
@@ -46,6 +49,10 @@ func Generate(info string, opts ...Option) *Generator {
 // To generate a migration in specified directory.
 func (g *Generator) To(directory string) error {
 	if err := g.fs.MkdirAll(directory, os.ModePerm); err != nil {
+		return err
+	}
+
+	if err := g.validator.Validate(g.fs, g.info, directory); err != nil {
 		return err
 	}
 

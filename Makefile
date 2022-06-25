@@ -9,6 +9,7 @@ install: ## Install dependencies
 .PHONY: mock
 mock: ## Generate mock files
 	@mockgen -package=generator_test -source=internal/generator/action.go -destination=internal/generator/action_mock_test.go
+	@mockgen -package=generator_test -source=internal/generator/validator.go -destination=internal/generator/validator_mock_test.go
 
 .PHONY: lint
 lint: ## Run linter
