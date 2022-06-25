@@ -1,27 +1,32 @@
 package templatex
 
-type options struct {
-	data   any
-	header bool
-	format bool
+import "github.com/spf13/afero"
+
+// Options describes options.
+type Options struct {
+	Fs     afero.Fs
+	Format bool
+	Data   map[string]any
 }
 
-// Option describes option.
-type Option func(*options)
+// Option describes template option.
+type Option func(*Options)
 
-// Data used to pass data to template.
-func Data(data any) Option {
-	return func(o *options) {
-		o.data = data
+// WithFs sets custom fs.
+func WithFs(fs afero.Fs) Option {
+	return func(o *Options) {
+		o.Fs = fs
 	}
 }
 
-// WithoutHeader disables header in result file.
-func WithoutHeader(o *options) {
-	o.header = false
+// WithFormat enables formatting after writing.
+func WithFormat(o *Options) {
+	o.Format = true
 }
 
-// DoNotFormat disables file formatting after template compilation.
-func DoNotFormat(o *options) {
-	o.format = false
+// WithData sets template data.
+func WithData(data map[string]any) Option {
+	return func(o *Options) {
+		o.Data = data
+	}
 }

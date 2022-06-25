@@ -23,9 +23,10 @@ func (a *Action) Generate(ctx context.Context) error {
 	fileName := fmt.Sprintf("%03d_%s.go", ctx.New.Version, stringy.New(ctx.New.Info).SnakeCase().ToLower())
 	packageName := path.Base(ctx.Directory)
 
-	return templatex.CompileWrite(ctx.Fs, path.Join(ctx.Directory, fileName), tpl,
-		templatex.WithoutHeader,
-		templatex.Data(map[string]any{
+	return tpl.Save(path.Join(ctx.Directory, fileName),
+		templatex.WithFs(ctx.Fs),
+		templatex.WithFormat,
+		templatex.WithData(map[string]any{
 			"Package": packageName,
 			"Struct":  ctx.New.Struct,
 			"Version": ctx.New.Version,

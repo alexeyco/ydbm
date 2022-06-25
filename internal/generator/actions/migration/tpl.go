@@ -1,9 +1,9 @@
 package migration
 
-import "text/template"
+import "github.com/alexeyco/ydbm/internal/templatex"
 
 // nolint:gci
-var tpl = template.Must(template.New("").Parse(`package {{ .Package }}
+var tpl = templatex.Parse(`package {{ .Package }}
 
 import (
 	"github.com/alexeyco/ydbm"
@@ -34,4 +34,4 @@ func ({{ .Struct }}) Up(tx table.TransactionActor) error {
 func ({{ .Struct }}) Down(tx table.TransactionActor) error {
 	return nil
 }
-`))
+`)

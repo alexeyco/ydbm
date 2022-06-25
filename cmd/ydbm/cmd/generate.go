@@ -20,7 +20,6 @@ var generateCmd = &cobra.Command{
 	Short: "Generate migration",
 	Example: `ydbm generate add some table
 ydbm generate add some table --output=path/to/directory`,
-	Args: cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		log := logx.New()
 

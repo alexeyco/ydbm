@@ -2,17 +2,29 @@ package templatex
 
 import (
 	"bytes"
+	"fmt"
 	"go/format"
 	"text/template"
 
 	"github.com/spf13/afero"
 )
 
-// CompileWrite compiles template and writes result to a file.
-func CompileWrite(fs afero.Fs, fileName string, tpl *template.Template, opts ...Option) error {
-	o := options{
-		header: true,
-		format: true,
+// Template describes template.
+type Template struct {
+	tpl *template.Template
+}
+
+// Parse returns new Template.
+func Parse(s string) *Template {
+	return &Template{
+		tpl: template.Must(template.New("").Parse(s)),
+	}
+}
+
+// Save compiles template and writes result to specified file.
+func (t *Template) Save(file string, opts ...Option) error {
+	o := Options{
+		Fs: afero.NewOsFs(),
 	}
 
 	for _, opt := range opts {
@@ -20,30 +32,21 @@ func CompileWrite(fs afero.Fs, fileName string, tpl *template.Template, opts ...
 	}
 
 	var buf bytes.Buffer
-	if err := tpl.Execute(&buf, o.data); err != nil {
-		return err
+	if err := t.tpl.Execute(&buf, o.Data); err != nil {
+		return fmt.Errorf("%w: %v", ErrTemplate, err)
 	}
 
-	f, err := fs.Create(fileName)
+	f, err := o.Fs.Create(file)
 	if err != nil {
 		return err
 	}
 
-	defer func() {
-		_ = f.Close()
-	}()
+	defer func() { _ = f.Close() }()
 
 	b := buf.Bytes()
-
-	if o.header {
-		if _, err = f.WriteString(comment + "\n"); err != nil {
-			return err
-		}
-	}
-
-	if o.format {
+	if o.Format {
 		if b, err = format.Source(b); err != nil {
-			return err
+			return fmt.Errorf("%w: %v", ErrFormatting, err)
 		}
 	}
 

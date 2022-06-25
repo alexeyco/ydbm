@@ -12,6 +12,13 @@ func WithFs(fs afero.Fs) Option {
 	}
 }
 
+// WithValidator to set custom Validator.
+func WithValidator(v Validator) Option {
+	return func(g *Generator) {
+		g.validator = v
+	}
+}
+
 // WithActions to set custom actions.
 func WithActions(a ...Action) Option {
 	return func(g *Generator) {

@@ -7,9 +7,8 @@ package generator_test
 import (
 	reflect "reflect"
 
+	context "github.com/alexeyco/ydbm/internal/generator/context"
 	gomock "github.com/golang/mock/gomock"
-
-	"github.com/alexeyco/ydbm/internal/generator/context"
 )
 
 // MockAction is a mock of Action interface.
