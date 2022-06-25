@@ -1,3 +1,4 @@
 /vendor
 /.idea
 /internal/ydbm
+/deployments

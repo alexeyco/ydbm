@@ -22,8 +22,10 @@ func (a *Action) Generate(ctx context.Context) error {
 	migrations := ctx.Current
 	migrations = append(migrations, ctx.New)
 
-	return templatex.CompileWrite(ctx.Fs, path.Join(ctx.Directory, "executor.go"), tpl,
-		templatex.Data(map[string]any{
+	return tpl.Save(path.Join(ctx.Directory, "executor.go"),
+		templatex.WithFs(ctx.Fs),
+		templatex.WithFormat,
+		templatex.WithData(map[string]any{
 			"Package":    packageName,
 			"Migrations": migrations,
 		}))
