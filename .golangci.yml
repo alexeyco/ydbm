@@ -12,6 +12,7 @@ linters:
     - gochecknoglobals
     - gochecknoinits
     - gomnd
+    - nolintlint
     - nonamedreturns
     - varnamelen
     - wrapcheck

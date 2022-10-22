@@ -34,7 +34,7 @@ func New() *Logger {
 
 // Fatal prints fatal error.
 func (l *Logger) Fatal(err error) {
-	// nolint:errorlint
+	//nolint:errorlint
 	merr, ok := err.(*multierror.Error)
 	if ok {
 		l.line(fatalBold, "Following errors occurred:")
