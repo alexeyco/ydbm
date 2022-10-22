@@ -1,4 +1,4 @@
-package ydbm
+package migration
 
 import "github.com/ydb-platform/ydb-go-sdk/v3/table"
 

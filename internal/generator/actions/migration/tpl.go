@@ -2,15 +2,15 @@ package migration
 
 import "github.com/alexeyco/ydbm/internal/templatex"
 
-// nolint:gci
+//nolint:gci
 var tpl = templatex.Parse(`package {{ .Package }}
 
 import (
-	"github.com/alexeyco/ydbm"
+	"github.com/alexeyco/ydbm/migration"
 	"github.com/ydb-platform/ydb-go-sdk/v3/table"
 )
 
-var _ ydbm.Migration = (*{{ .Struct }})(nil)
+var _ migration.Migration = (*{{ .Struct }})(nil)
 
 // {{ .Struct }} describes migration.
 type {{ .Struct }} struct {}

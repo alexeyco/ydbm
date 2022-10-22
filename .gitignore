@@ -1,4 +1,6 @@
 /vendor
 /.idea
+/internal/migrations
+/internal/generated/migrations
 /internal/ydbm
 /deployments
