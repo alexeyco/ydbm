@@ -28,12 +28,12 @@ func ({{ .Struct }}) Info() string {
 }
 
 // Up to increment database version.
-func ({{ .Struct }}) Up(ctx context.Context, s table.Session) error {
+func ({{ .Struct }}) Up(ctx context.Context, path string, s table.Session) error {
 	return nil
 }
 
 // Down to decrement database version.
-func ({{ .Struct }}) Down(ctx context.Context, s table.Session) error {
+func ({{ .Struct }}) Down(ctx context.Context, path string, s table.Session) error {
 	return nil
 }
 `)

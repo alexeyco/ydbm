@@ -10,6 +10,6 @@ import (
 type Migration interface {
 	Version() int64
 	Info() string
-	Up(context.Context, table.Session) error
-	Down(context.Context, table.Session) error
+	Up(context.Context, string, table.Session) error
+	Down(context.Context, string, table.Session) error
 }

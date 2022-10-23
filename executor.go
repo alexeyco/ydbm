@@ -94,7 +94,7 @@ func (e *Executor) Up(ctx context.Context) (err error) {
 				}
 			}()
 
-			if err = m.Up(ctx, s); err != nil {
+			if err = m.Up(ctx, e.path, s); err != nil {
 				return
 			}
 
@@ -138,7 +138,7 @@ func (e *Executor) Down(ctx context.Context) (err error) {
 				}
 			}()
 
-			if err = m.Down(ctx, s); err != nil {
+			if err = m.Down(ctx, e.path, s); err != nil {
 				return
 			}
 
