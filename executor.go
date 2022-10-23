@@ -69,7 +69,7 @@ func (e *Executor) Register(migrations ...migration.Migration) *Executor {
 
 // Up increments database version.
 func (e *Executor) Up(ctx context.Context) (err error) {
-	current, err := e.currentVersion(ctx)
+	current, err := e.Version(ctx)
 	if err != nil {
 		return
 	}
@@ -108,12 +108,12 @@ func (e *Executor) Up(ctx context.Context) (err error) {
 		}
 	}
 
-	return
+	return err
 }
 
 // Down decrements database version.
 func (e *Executor) Down(ctx context.Context) (err error) {
-	current, err := e.currentVersion(ctx)
+	current, err := e.Version(ctx)
 	if err != nil {
 		return
 	}
@@ -152,10 +152,11 @@ func (e *Executor) Down(ctx context.Context) (err error) {
 		}
 	}
 
-	return
+	return err
 }
 
-func (e *Executor) currentVersion(ctx context.Context) (version int64, err error) {
+// Version returns current database version.
+func (e *Executor) Version(ctx context.Context) (version int64, err error) {
 	if err = e.prepareTable(ctx); err != nil {
 		return
 	}
