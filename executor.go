@@ -16,11 +16,17 @@ import (
 	"github.com/alexeyco/ydbm/migration"
 )
 
-var read = table.TxControl(
-	table.BeginTx(
-		table.WithOnlineReadOnly(),
-	),
-	table.CommitTx(),
+var (
+	read = table.TxControl(
+		table.BeginTx(
+			table.WithOnlineReadOnly(),
+		),
+		table.CommitTx(),
+	)
+
+	write = table.TxSettings(
+		table.WithSerializableReadWrite(),
+	)
 )
 
 // Executor describes migrations executor.
@@ -75,8 +81,20 @@ func (e *Executor) Up(ctx context.Context) (err error) {
 			continue
 		}
 
-		err = e.conn.Table().DoTx(ctx, func(ctx context.Context, tx table.TransactionActor) (err error) {
-			if err = m.Up(tx); err != nil {
+		err = e.conn.Table().Do(ctx, func(ctx context.Context, s table.Session) (err error) {
+			tx, err := s.BeginTransaction(ctx, write)
+			if err != nil {
+				return err
+			}
+			defer func() {
+				if err != nil {
+					_ = tx.Rollback(ctx)
+				} else {
+					_, _ = tx.CommitTx(ctx)
+				}
+			}()
+
+			if err = m.Up(ctx, s); err != nil {
 				return
 			}
 
@@ -107,8 +125,20 @@ func (e *Executor) Down(ctx context.Context) (err error) {
 			continue
 		}
 
-		err = e.conn.Table().DoTx(ctx, func(ctx context.Context, tx table.TransactionActor) (err error) {
-			if err = m.Down(tx); err != nil {
+		err = e.conn.Table().Do(ctx, func(ctx context.Context, s table.Session) (err error) {
+			tx, err := s.BeginTransaction(ctx, write)
+			if err != nil {
+				return err
+			}
+			defer func() {
+				if err != nil {
+					_ = tx.Rollback(ctx)
+				} else {
+					_, _ = tx.CommitTx(ctx)
+				}
+			}()
+
+			if err = m.Down(ctx, s); err != nil {
 				return
 			}
 
@@ -145,7 +175,7 @@ func (e *Executor) currentVersion(ctx context.Context) (version int64, err error
 
 		for res.NextResultSet(ctx) {
 			for res.NextRow() {
-				if err = res.ScanNamed(named.Optional(columns.Version, &version)); err != nil {
+				if err = res.ScanNamed(named.Required(columns.Version, &version)); err != nil {
 					return err
 				}
 			}

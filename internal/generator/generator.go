@@ -123,5 +123,5 @@ func (g *Generator) current(directory string) ([]context.Migration, error) {
 }
 
 func (g *Generator) structName(version int64) string {
-	return fmt.Sprintf("migration%03d", version)
+	return fmt.Sprintf("migration%04d", version)
 }
