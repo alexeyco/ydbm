@@ -20,7 +20,7 @@ func New() *Action {
 
 // Generate migration.
 func (a *Action) Generate(ctx context.Context) error {
-	fileName := fmt.Sprintf("%03d_%s.go", ctx.New.Version, stringy.New(ctx.New.Info).SnakeCase().ToLower())
+	fileName := fmt.Sprintf("%04d_%s.go", ctx.New.Version, stringy.New(ctx.New.Info).SnakeCase().ToLower())
 	packageName := path.Base(ctx.Directory)
 
 	return tpl.Save(path.Join(ctx.Directory, fileName),
