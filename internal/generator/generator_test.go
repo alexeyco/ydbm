@@ -34,7 +34,7 @@ func TestGenerator_To(t *testing.T) {
 			New: context.Migration{
 				Version: 1,
 				Info:    "foo bar",
-				Struct:  "migration001",
+				Struct:  "migration0001",
 			},
 		}
 
@@ -69,7 +69,7 @@ func TestGenerator_To(t *testing.T) {
 			New: context.Migration{
 				Version: 1,
 				Info:    "foo bar",
-				Struct:  "migration001",
+				Struct:  "migration0001",
 			},
 		}
 
@@ -99,7 +99,7 @@ func TestGenerator_To(t *testing.T) {
 			New: context.Migration{
 				Version: 1,
 				Info:    "foo bar",
-				Struct:  "migration001",
+				Struct:  "migration0001",
 			},
 		}
 
