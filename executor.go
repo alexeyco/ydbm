@@ -190,7 +190,9 @@ func (e *Executor) Version(ctx context.Context) (version int64, err error) {
 
 func (e *Executor) prepareTable(ctx context.Context) (err error) {
 	err = e.conn.Table().Do(ctx, func(ctx context.Context, s table.Session) error {
-		_, err := s.DescribeTable(ctx, e.path)
+		path := e.path + "/" + e.name
+
+		_, err := s.DescribeTable(ctx, path)
 		if err == nil {
 			return nil
 		}
@@ -199,7 +201,7 @@ func (e *Executor) prepareTable(ctx context.Context) (err error) {
 			return err
 		}
 
-		err = s.CreateTable(ctx, e.path,
+		err = s.CreateTable(ctx, path,
 			options.WithColumn(columns.Version, types.Optional(types.TypeInt64)),
 			options.WithColumn(columns.Info, types.Optional(types.TypeString)),
 			options.WithColumn(columns.AppliedAt, types.Optional(types.TypeTimestamp)),
