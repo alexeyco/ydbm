@@ -1,6 +1,6 @@
 module github.com/alexeyco/ydbm
 
-go 1.18
+go 1.19
 
 require (
 	github.com/gobeam/stringy v0.0.6
