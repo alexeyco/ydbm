@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/spf13/afero"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/alexeyco/ydbm/internal/generator/validator"
 )
@@ -28,7 +28,7 @@ func TestValidator_Validate(t *testing.T) {
 
 		err := v.Validate(afero.NewMemMapFs(), "", "")
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("Error", func(t *testing.T) {
@@ -42,6 +42,6 @@ func TestValidator_Validate(t *testing.T) {
 
 		err := v.Validate(afero.NewMemMapFs(), "", "")
 
-		assert.ErrorIs(t, err, expectedError)
+		require.ErrorIs(t, err, expectedError)
 	})
 }

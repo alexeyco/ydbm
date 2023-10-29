@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/spf13/afero"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/alexeyco/ydbm/internal/generator/validator/errors"
 	"github.com/alexeyco/ydbm/internal/generator/validator/rules"
@@ -20,7 +20,7 @@ func TestInfoLength(t *testing.T) {
 
 		err := rules.InfoLength(fsMock, "12345", "")
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("Error", func(t *testing.T) {
@@ -28,6 +28,6 @@ func TestInfoLength(t *testing.T) {
 
 		err := rules.InfoLength(fsMock, "1234", "")
 
-		assert.ErrorIs(t, err, errors.ErrInfoIsTooShort)
+		require.ErrorIs(t, err, errors.ErrInfoIsTooShort)
 	})
 }

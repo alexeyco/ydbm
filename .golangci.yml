@@ -7,11 +7,14 @@ run:
 linters:
   enable-all: true
   disable:
+    - depguard
     - exhaustivestruct
     - exhaustruct
     - gochecknoglobals
     - gochecknoinits
     - gomnd
+    - inamedparam
+    - nakedret
     - nolintlint
     - nonamedreturns
     - varnamelen
