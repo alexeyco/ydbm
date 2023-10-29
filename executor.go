@@ -31,7 +31,7 @@ var (
 
 // Executor describes migrations executor.
 type Executor struct {
-	conn       ydb.Connection
+	conn       *ydb.Driver
 	path       string
 	name       string
 	builder    Builder
@@ -40,7 +40,7 @@ type Executor struct {
 }
 
 // New returns new Executor.
-func New(conn ydb.Connection, opts ...Option) *Executor {
+func New(conn *ydb.Driver, opts ...Option) *Executor {
 	e := &Executor{
 		conn:    conn,
 		path:    "/",

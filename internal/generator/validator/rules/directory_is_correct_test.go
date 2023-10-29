@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/spf13/afero"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/alexeyco/ydbm/internal/generator/validator/errors"
 	"github.com/alexeyco/ydbm/internal/generator/validator/rules"
@@ -23,10 +23,10 @@ func TestDirectoryIsCorrect(t *testing.T) {
 		fsMock := afero.NewMemMapFs()
 
 		err := fsMock.MkdirAll(directory, os.ModePerm)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		err = rules.DirectoryIsCorrect(fsMock, "", directory)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("ErrDirectoryDoesNotExist", func(t *testing.T) {
@@ -35,7 +35,7 @@ func TestDirectoryIsCorrect(t *testing.T) {
 		fsMock := afero.NewMemMapFs()
 
 		err := rules.DirectoryIsCorrect(fsMock, "", directory)
-		assert.ErrorIs(t, err, errors.ErrDirectoryDoesNotExist)
+		require.ErrorIs(t, err, errors.ErrDirectoryDoesNotExist)
 	})
 
 	t.Run("ErrDirectoryIsAFile", func(t *testing.T) {
@@ -44,12 +44,12 @@ func TestDirectoryIsCorrect(t *testing.T) {
 		fsMock := afero.NewMemMapFs()
 
 		err := fsMock.MkdirAll(path.Dir(directory), os.ModePerm)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		_, err = fsMock.Create(directory)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		err = rules.DirectoryIsCorrect(fsMock, "", directory)
-		assert.ErrorIs(t, err, errors.ErrDirectoryIsAFile)
+		require.ErrorIs(t, err, errors.ErrDirectoryIsAFile)
 	})
 }

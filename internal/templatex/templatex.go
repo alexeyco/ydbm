@@ -33,7 +33,7 @@ func (t *Template) Save(file string, opts ...Option) error {
 
 	var buf bytes.Buffer
 	if err := t.tpl.Execute(&buf, o.Data); err != nil {
-		return fmt.Errorf("%w: %v", ErrTemplate, err)
+		return fmt.Errorf("%w: %w", ErrTemplate, err)
 	}
 
 	f, err := o.Fs.Create(file)
@@ -46,7 +46,7 @@ func (t *Template) Save(file string, opts ...Option) error {
 	b := buf.Bytes()
 	if o.Format {
 		if b, err = format.Source(b); err != nil {
-			return fmt.Errorf("%w: %v", ErrFormatting, err)
+			return fmt.Errorf("%w: %w", ErrFormatting, err)
 		}
 	}
 

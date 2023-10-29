@@ -6,6 +6,7 @@ import (
 
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/alexeyco/ydbm/internal/templatex"
 )
@@ -49,15 +50,15 @@ func TestTemplate_Save(t *testing.T) {
 				templatex.WithFs(fsMock),
 				templatex.WithData(data),
 			)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		f, err := fsMock.Open(file)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		defer func() { _ = f.Close() }()
 
 		b, err := io.ReadAll(f)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		assert.Equal(t, raw, string(b))
 	})
@@ -73,15 +74,15 @@ func TestTemplate_Save(t *testing.T) {
 				templatex.WithFormat,
 				templatex.WithData(data),
 			)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		f, err := fsMock.Open(file)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		defer func() { _ = f.Close() }()
 
 		b, err := io.ReadAll(f)
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		assert.Equal(t, formatted, string(b))
 	})
@@ -96,6 +97,6 @@ func TestTemplate_Save(t *testing.T) {
 				templatex.WithFs(fsMock),
 				templatex.WithFormat,
 			)
-		assert.ErrorIs(t, err, templatex.ErrFormatting)
+		require.ErrorIs(t, err, templatex.ErrFormatting)
 	})
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 
 	"github.com/alexeyco/ydbm/internal/generator"
 	"github.com/alexeyco/ydbm/internal/generator/context"
@@ -48,11 +49,11 @@ func TestGenerator_To(t *testing.T) {
 			generator.WithActions(actionMock),
 		).To(directory)
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 
 		fi, err := fsMock.Stat(directory)
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.True(t, fi.IsDir())
 	})
 
@@ -83,7 +84,7 @@ func TestGenerator_To(t *testing.T) {
 			generator.WithActions(actionMock),
 		).To(directory)
 
-		assert.ErrorIs(t, err, expectedError)
+		require.ErrorIs(t, err, expectedError)
 	})
 
 	t.Run("ValidatorError", func(t *testing.T) {
@@ -112,6 +113,6 @@ func TestGenerator_To(t *testing.T) {
 			generator.WithActions(actionMock),
 		).To(directory)
 
-		assert.ErrorIs(t, err, expectedError)
+		require.ErrorIs(t, err, expectedError)
 	})
 }
