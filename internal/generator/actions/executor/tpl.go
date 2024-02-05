@@ -12,7 +12,7 @@ import (
 )
 
 // Executor returns migrations executor.
-func Executor(conn ydb.Connection, path, name string) *ydbm.Executor {
+func Executor(conn *ydb.Driver, path, name string) *ydbm.Executor {
 	return ydbm.New(conn, ydbm.WithTablePath(path), ydbm.WithTableName(name)).
 		Register({{ range .Migrations }}
 			{{ .Struct }}{},{{ end }}
